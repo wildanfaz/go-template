@@ -11,18 +11,18 @@ import (
 func InitMySql() *sql.DB {
 	fmt.Println("Connecting to Database")
 	db, err := sql.Open("mysql", GetEnv("MYSQL_DSN", "root:secret@tcp(localhost:3306)/go-template?parseTime=true"))
-	if err != nil {
+	if err != nil || db.Ping() != nil {
 		for i := 1; i <= 20; i++ {
 			fmt.Printf("Retrying Database Connection #%d\n", i)
 			db, err = sql.Open("mysql", GetEnv("MYSQL_DSN", "root:secret@tcp(localhost:3306)/go-template?parseTime=true"))
-			if err == nil {
+			if err == nil && db.Ping() == nil {
 				break
 			}
 			time.Sleep(5 * time.Second)
 		}
 
-		if err != nil {
-			panic(err)
+		if err != nil || db.Ping() != nil {
+			panic(db.Ping())
 		}
 	}
 
