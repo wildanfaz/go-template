@@ -2,15 +2,15 @@ package repositories
 
 import "database/sql"
 
-type Repository struct {
+type ImplementBooks struct {
 	dbMySql *sql.DB
 }
 
-type BooksRepository interface {
+type Books interface {
 }
 
-func NewBooksRepository(dbMySql *sql.DB) BooksRepository {
-	return &Repository{
+func NewBooksRepository(dbMySql *sql.DB) Books {
+	return &ImplementBooks{
 		dbMySql: dbMySql,
 	}
 }

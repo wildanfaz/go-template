@@ -6,22 +6,20 @@ import (
 	"strings"
 )
 
-func MySQLUpdateQueryValues(payload any, tag string) (string, []any, error) {
+func MySQLUpdateQueryValues(payload any, table, tag string) (string, []any, error) {
 	vo := reflect.ValueOf(payload)
 	to := reflect.TypeOf(payload)
 
-	if vo.Kind() != reflect.Ptr {
-		return "", nil, fmt.Errorf("Expected %v, got %v", reflect.Ptr, vo.Kind())
+	if vo.Kind() == reflect.Ptr {
+		vo = vo.Elem()
+		to = to.Elem()
 	}
-
-	vo = vo.Elem()
-	to = to.Elem()
 
 	if vo.Kind() != reflect.Struct {
 		return "", nil, fmt.Errorf("Expected %v, got %v", reflect.Struct, vo.Kind())
 	}
 
-	query := "UPDATE users \nSET "
+	query := fmt.Sprintf("UPDATE %s \nSET ", table)
 
 	values := []any{}
 	whereKeys := []string{}
@@ -29,6 +27,11 @@ func MySQLUpdateQueryValues(payload any, tag string) (string, []any, error) {
 
 	for i := 0; i < vo.NumField(); i++ {
 		v := vo.Field(i)
+
+		if v.IsZero() {
+			continue
+		}
+
 		column := to.Field(i).Tag.Get("column")
 
 		if strings.Contains(column, "where") {

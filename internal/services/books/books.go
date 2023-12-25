@@ -5,16 +5,19 @@ import (
 	"github.com/wildanfaz/go-template/internal/repositories"
 )
 
-type Service struct {
-	booksRepo repositories.BooksRepository
+type ImplementServices struct {
+	booksRepo repositories.Books
 	log       *logrus.Logger
 }
 
+type Services interface {
+}
+
 func NewService(
-	booksRepo repositories.BooksRepository,
+	booksRepo repositories.Books,
 	log *logrus.Logger,
-) *Service {
-	return &Service{
+) Services {
+	return &ImplementServices{
 		booksRepo: booksRepo,
 		log:       log,
 	}

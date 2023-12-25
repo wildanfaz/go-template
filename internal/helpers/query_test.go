@@ -18,7 +18,7 @@ func TestMySQLUpdateQueryValues(t *testing.T) {
 		Email: "foo@bar.com",
 	}
 
-	query, values, err := MySQLUpdateQueryValues(user, "column")
+	query, values, err := MySQLUpdateQueryValues(user,  "users", "column")
 	if err != nil {
 		t.Fatal(err)
 	}
