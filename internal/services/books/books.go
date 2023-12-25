@@ -2,23 +2,27 @@ package books
 
 import (
 	"github.com/sirupsen/logrus"
+	"github.com/wildanfaz/go-template/configs"
 	"github.com/wildanfaz/go-template/internal/repositories"
 )
 
 type ImplementServices struct {
-	booksRepo repositories.Books
-	log       *logrus.Logger
+	books  repositories.Books
+	log    *logrus.Logger
+	config *configs.Config
 }
 
 type Services interface {
 }
 
 func NewService(
-	booksRepo repositories.Books,
+	books repositories.Books,
 	log *logrus.Logger,
+	config *configs.Config,
 ) Services {
 	return &ImplementServices{
-		booksRepo: booksRepo,
-		log:       log,
+		books:  books,
+		log:    log,
+		config: config,
 	}
 }

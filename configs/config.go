@@ -1,16 +1,26 @@
 package configs
 
-import "os"
+import (
+	"os"
+	"time"
+)
 
 type Config struct {
-	EchoPort string
+	EchoPort    string
+	JWTSecret   []byte
+	JWTDuration time.Duration
 }
 
 func InitConfig() *Config {
-	echoPort := GetEnv("ECHO_PORT", ":1323")
+	jwtDuration, err := time.ParseDuration(GetEnv("JWT_DURATION", "1h"))
+	if err != nil {
+		panic(err)
+	}
 
 	return &Config{
-		EchoPort: echoPort,
+		EchoPort:    GetEnv("ECHO_PORT", ":1323"),
+		JWTSecret:   []byte(GetEnv("JWT_SECRET", "secret")),
+		JWTDuration: jwtDuration,
 	}
 }
 
