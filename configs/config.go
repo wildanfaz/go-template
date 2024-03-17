@@ -1,33 +1,34 @@
 package configs
 
 import (
-	"os"
 	"time"
+
+	"github.com/spf13/viper"
 )
 
 type Config struct {
-	EchoPort    string
-	JWTSecret   []byte
-	JWTDuration time.Duration
+	AppAuthor    string
+	AppPort      string
+	JWTSecretKey []byte
+	JWTDuration  time.Duration
+	DatabaseDSN  string
 }
 
 func InitConfig() *Config {
-	jwtDuration, err := time.ParseDuration(GetEnv("JWT_DURATION", "1h"))
-	if err != nil {
+	config := viper.New()
+	config.AutomaticEnv()
+	config.SetConfigFile("config.json")
+	config.AddConfigPath(".")
+
+	if err := config.ReadInConfig(); err != nil {
 		panic(err)
 	}
 
 	return &Config{
-		EchoPort:    GetEnv("ECHO_PORT", ":1323"),
-		JWTSecret:   []byte(GetEnv("JWT_SECRET", "secret")),
-		JWTDuration: jwtDuration,
+		AppAuthor:    config.GetString("app.author"),
+		AppPort:      config.GetString("app.port"),
+		JWTSecretKey: []byte(config.GetString("jwt.secret_key")),
+		JWTDuration:  config.GetDuration("jwt.duration"),
+		DatabaseDSN:  config.GetString("database.mysql_dsn"),
 	}
-}
-
-func GetEnv(key, defaultValue string) string {
-	if value := os.Getenv(key); value != "" {
-		return value
-	}
-
-	return defaultValue
 }

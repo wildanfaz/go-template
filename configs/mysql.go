@@ -8,13 +8,13 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-func InitMySql() *sql.DB {
+func InitMySql(databaseDSN string) *sql.DB {
 	fmt.Println("Connecting to Database")
-	db, err := sql.Open("mysql", GetEnv("MYSQL_DSN", "root:secret@tcp(localhost:3306)/go-template?parseTime=true"))
+	db, err := sql.Open("mysql", databaseDSN)
 	if err != nil || db.Ping() != nil {
 		for i := 1; i <= 20; i++ {
 			fmt.Printf("Retrying Database Connection #%d\n", i)
-			db, err = sql.Open("mysql", GetEnv("MYSQL_DSN", "root:secret@tcp(localhost:3306)/go-template?parseTime=true"))
+			db, err = sql.Open("mysql", databaseDSN)
 			if err == nil && db.Ping() == nil {
 				break
 			}
