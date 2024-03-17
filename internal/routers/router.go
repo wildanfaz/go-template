@@ -14,8 +14,6 @@ import (
 )
 
 func InitEchoRouter() {
-	fmt.Println(constants.Blue, "---Init Echo Router---")
-
 	// configs
 	config := configs.InitConfig()
 	dbMySql := configs.InitMySql(config.DatabaseDSN)
