@@ -27,7 +27,7 @@ func InitEchoRouter() {
 	booksRepo := repositories.NewBooksRepository(dbMySql)
 
 	// services
-	_ = books.NewService(booksRepo, log, config)
+	_ = books.New(booksRepo, log, config)
 
 	e := echo.New()
 

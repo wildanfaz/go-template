@@ -15,7 +15,7 @@ type ImplementServices struct {
 type Services interface {
 }
 
-func NewService(
+func New(
 	books repositories.Books,
 	log *logrus.Logger,
 	config *configs.Config,
