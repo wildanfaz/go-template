@@ -1,0 +1,13 @@
+{
+    "app" : {
+        "author" : "Muhamad Wildan Faz",
+        "port" : ":7000"
+    },
+    "database" : {
+        "mysql_dsn" : "root:secret@tcp(localhost:3306)/go-template?parseTime=true"
+    },
+    "jwt" : {
+        "duration" : "1h",
+        "secret_key" : "mysecretkey"
+    }
+}
